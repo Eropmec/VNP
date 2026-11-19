@@ -1,0 +1,12 @@
+# редактор и формат
+pydantic>=2.7
+jsonschema>=4.21
+PySide6>=6.6
+
+# разработка
+# версии зафиксированы: от них зависит оформление сгенерированных моделей
+datamodel-code-generator==0.95.0
+black==26.10.1
+isort==8.0.1
+pytest
+pillow          # только для tools/make_demo_assets.py

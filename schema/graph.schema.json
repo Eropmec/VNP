@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "graph.schema.json",
+  "title": "Graph",
+  "$comment": "story/graph.json — сюжетный граф (только логика, без координат)",
+  "type": "object",
+  "properties": {
+    "nodes": { "type": "array", "items": { "$ref": "#/$defs/Node" } },
+    "edges": { "type": "array", "items": { "$ref": "#/$defs/Edge" } }
+  },
+  "required": ["nodes", "edges"],
+  "additionalProperties": false,
+  "$defs": {
+    "Node": {
+      "oneOf": [
+        { "$ref": "#/$defs/ChapterNode" },
+        { "$ref": "#/$defs/SceneNode" },
+        { "$ref": "#/$defs/BranchNode" },
+        { "$ref": "#/$defs/EndingNode" }
+      ]
+    },
+    "Importance": {
+      "type": "string",
+      "enum": ["key", "normal", "minor"],
+      "description": "key — поворотная точка (видна на уровне «ключевые точки»)"
+    },
+    "PlayerFlowchart": {
+      "description": "Как узел показывается игроку на его схеме прохождения",
+      "type": "object",
+      "properties": {
+        "visible": { "type": "boolean" },
+        "title": { "$ref": "common.schema.json#/$defs/StrKey" }
+      },
+      "required": ["visible"],
+      "additionalProperties": false
+    },
+    "ChapterNode": {
+      "description": "Контейнер: глава со своим подграфом. Ребро, ведущее в главу, ведёт в её entry",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/NodeId" },
+        "type": { "const": "chapter" },
+        "name": { "type": "string", "minLength": 1 },
+        "parent": { "$ref": "common.schema.json#/$defs/NodeId" },
+        "importance": { "$ref": "#/$defs/Importance" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "note": { "type": "string" },
+        "player_flowchart": { "$ref": "#/$defs/PlayerFlowchart" },
+        "entry": { "$ref": "common.schema.json#/$defs/NodeId", "description": "Первый узел главы" }
+      },
+      "required": ["id", "type", "name", "entry"],
+      "additionalProperties": false
+    },
+    "SceneNode": {
+      "description": "Сцена: реплики, показ персонажей, выборы. Выходы — порты из её команд",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/NodeId" },
+        "type": { "const": "scene" },
+        "name": { "type": "string", "minLength": 1 },
+        "parent": { "$ref": "common.schema.json#/$defs/NodeId" },
+        "importance": { "$ref": "#/$defs/Importance" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "note": { "type": "string" },
+        "player_flowchart": { "$ref": "#/$defs/PlayerFlowchart" },
+        "scene": { "$ref": "common.schema.json#/$defs/SceneId" }
+      },
+      "required": ["id", "type", "name", "scene"],
+      "additionalProperties": false
+    },
+    "BranchNode": {
+      "description": "Ветвление по условиям: первый истинный case, иначе порт else",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/NodeId" },
+        "type": { "const": "branch" },
+        "name": { "type": "string", "minLength": 1 },
+        "parent": { "$ref": "common.schema.json#/$defs/NodeId" },
+        "importance": { "$ref": "#/$defs/Importance" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "note": { "type": "string" },
+        "player_flowchart": { "$ref": "#/$defs/PlayerFlowchart" },
+        "cases": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "port": { "$ref": "common.schema.json#/$defs/PortId" },
+              "label": { "type": "string" },
+              "condition": { "$ref": "expr.schema.json#/$defs/Expr" }
+            },
+            "required": ["port", "condition"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["id", "type", "name", "cases"],
+      "additionalProperties": false
+    },
+    "EndingNode": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/NodeId" },
+        "type": { "const": "ending" },
+        "name": { "type": "string", "minLength": 1 },
+        "parent": { "$ref": "common.schema.json#/$defs/NodeId" },
+        "importance": { "$ref": "#/$defs/Importance" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "note": { "type": "string" },
+        "player_flowchart": { "$ref": "#/$defs/PlayerFlowchart" },
+        "ending": {
+          "type": "object",
+          "properties": {
+            "title": { "$ref": "common.schema.json#/$defs/StrKey" },
+            "kind": { "type": "string", "enum": ["good", "neutral", "bad", "secret"] }
+          },
+          "required": ["title", "kind"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["id", "type", "name", "ending"],
+      "additionalProperties": false
+    },
+    "Edge": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/EdgeId" },
+        "from": {
+          "type": "object",
+          "properties": {
+            "node": { "$ref": "common.schema.json#/$defs/NodeId" },
+            "port": { "$ref": "common.schema.json#/$defs/PortId" }
+          },
+          "required": ["node", "port"],
+          "additionalProperties": false
+        },
+        "to": { "$ref": "common.schema.json#/$defs/NodeId" }
+      },
+      "required": ["id", "from", "to"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "assets.schema.json",
+  "title": "AssetRegistry",
+  "$comment": "assets/registry.json — реестр ассетов",
+  "description": "Сцены ссылаются на ассеты по ID: переименование файла меняет только реестр.",
+  "type": "object",
+  "properties": {
+    "assets": { "type": "array", "items": { "$ref": "#/$defs/Asset" } }
+  },
+  "required": ["assets"],
+  "additionalProperties": false,
+  "$defs": {
+    "Asset": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/AssetId" },
+        "kind": { "type": "string", "enum": ["image", "audio", "video", "font"] },
+        "path": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*\\.\\.)[^\\\\:]+$",
+          "description": "Путь относительно папки assets/, через «/»"
+        },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["id", "kind", "path"],
+      "additionalProperties": false
+    }
+  }
+}

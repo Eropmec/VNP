@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "character.schema.json",
+  "title": "Character",
+  "$comment": "db/characters/<id>.json — персонаж",
+  "description": "Этап 0: один спрайт на эмоцию. Составные спрайты (тело, лицо, одежда) — этап 4.",
+  "type": "object",
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/CharId" },
+    "name": { "$ref": "common.schema.json#/$defs/StrKey", "description": "Отображаемое имя (локализуется)" },
+    "color": { "$ref": "common.schema.json#/$defs/Color", "description": "Цвет имени в диалоговом окне" },
+    "expressions": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[A-Za-zА-Яа-яЁё_][A-Za-zА-Яа-яЁё0-9_]*$", "description": "Имя эмоции: можно по-русски — грустная" },
+      "additionalProperties": { "$ref": "common.schema.json#/$defs/AssetId" },
+      "minProperties": 1
+    },
+    "default_expression": { "type": "string" }
+  },
+  "required": ["id", "name", "expressions", "default_expression"],
+  "additionalProperties": false
+}

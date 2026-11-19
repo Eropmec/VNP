@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "layout.schema.json",
+  "title": "Layout",
+  "$comment": "story/layout.json — вид графа: координаты и свёрнутые главы",
+  "description": "Отделён от логики: перетаскивание узла меняет только этот файл, и правки не конфликтуют в git.",
+  "type": "object",
+  "properties": {
+    "positions": {
+      "type": "object",
+      "propertyNames": { "$ref": "common.schema.json#/$defs/NodeId" },
+      "additionalProperties": {
+        "type": "object",
+        "properties": { "x": { "type": "number" }, "y": { "type": "number" } },
+        "required": ["x", "y"],
+        "additionalProperties": false
+      }
+    },
+    "collapsed": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/NodeId" }, "uniqueItems": true }
+  },
+  "required": ["positions"],
+  "additionalProperties": false
+}

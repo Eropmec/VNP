@@ -1,0 +1,11 @@
+{
+  "assets": [
+    { "id": "a_bg_hall",      "kind": "image", "path": "bg/hall.png",           "tags": ["дом"] },
+    { "id": "a_bg_cellar",    "kind": "image", "path": "bg/cellar.png",         "tags": ["дом", "темно"] },
+    { "id": "a_anna_neutral", "kind": "image", "path": "sprites/anna_neutral.png" },
+    { "id": "a_anna_sad",     "kind": "image", "path": "sprites/anna_sad.png" },
+    { "id": "a_anna_scared",  "kind": "image", "path": "sprites/anna_scared.png" },
+    { "id": "a_mus_ambient",  "kind": "audio", "path": "audio/ambient.wav" },
+    { "id": "a_sfx_creak",    "kind": "audio", "path": "audio/creak.wav" }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "sc_zmhph",
+  "commands": [
+    {
+      "id": "c_zmhph",
+      "cmd": "narrate",
+      "text": "str_em88a"
+    },
+    {
+      "id": "c_g3nx6",
+      "cmd": "bg",
+      "asset": "a_bg_hall",
+      "transition": {
+        "type": "dissolve",
+        "duration": 0.5
+      }
+    },
+    {
+      "id": "c_62g25",
+      "cmd": "say",
+      "char": "ch_anna",
+      "text": "str_m26yt"
+    }
+  ]
+}

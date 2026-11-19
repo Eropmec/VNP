@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "project.schema.json",
+  "title": "Project",
+  "$comment": "project.json — метаданные проекта",
+  "type": "object",
+  "properties": {
+    "format_version": { "const": 1, "description": "Версия формата; редактор мигрирует старые проекты" },
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*$", "description": "Машинное имя игры (имя пакета, папка сохранений)" },
+    "title": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "start": { "$ref": "common.schema.json#/$defs/NodeId", "description": "Узел, с которого начинается игра" },
+    "languages": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z]{2}(-[A-Z]{2})?$" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "default_language": { "type": "string", "pattern": "^[a-z]{2}(-[A-Z]{2})?$" },
+    "resolution": {
+      "type": "object",
+      "properties": {
+        "width": { "type": "integer", "minimum": 320 },
+        "height": { "type": "integer", "minimum": 240 }
+      },
+      "required": ["width", "height"],
+      "additionalProperties": false
+    },
+    "platforms": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["windows", "linux", "macos", "android"] },
+      "uniqueItems": true
+    },
+    "menu": {
+      "description": "Главное меню игры: фон и музыка",
+      "type": "object",
+      "properties": {
+        "background": { "$ref": "common.schema.json#/$defs/AssetId" },
+        "music": { "$ref": "common.schema.json#/$defs/AssetId" }
+      },
+      "additionalProperties": false
+    },
+    "modules": {
+      "description": "Подключённые модули и плагины (на этапе 0 — пусто)",
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    }
+  },
+  "required": ["format_version", "id", "title", "version", "start", "languages", "default_language", "resolution"],
+  "additionalProperties": false
+}

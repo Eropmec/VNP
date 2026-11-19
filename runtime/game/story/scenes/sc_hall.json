@@ -1,0 +1,11 @@
+{
+  "id": "sc_hall",
+  "commands": [
+    { "id": "c_bg", "cmd": "bg", "asset": "a_bg_hall" },
+    { "id": "c_show", "cmd": "show", "char": "ch_anna", "expr": "sad", "at": "right" },
+    { "id": "c_s1", "cmd": "say", "char": "ch_anna", "text": "str_hall_1" },
+    { "id": "c_hide", "cmd": "hide", "char": "ch_anna", "transition": { "type": "fade", "duration": 0.6 } },
+    { "id": "c_stop", "cmd": "stop_audio", "channel": "music", "fade": 1.5 },
+    { "id": "c_n1", "cmd": "narrate", "text": "str_hall_2" }
+  ]
+}

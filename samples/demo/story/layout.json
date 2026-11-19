@@ -1,0 +1,13 @@
+{
+  "positions": {
+    "n_ch1": { "x": 0, "y": 0 },
+    "n_intro": { "x": 0, "y": 0 },
+    "n_cellar": { "x": -160, "y": 194 },
+    "n_hall": { "x": 160, "y": 194 },
+    "n_fate": { "x": 0, "y": 388 },
+    "n_end_alone": { "x": -320, "y": 582 },
+    "n_end_saved": { "x": 0, "y": 582 },
+    "n_end_whisper": { "x": 320, "y": 582 }
+  },
+  "collapsed": []
+}

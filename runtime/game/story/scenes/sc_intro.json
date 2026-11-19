@@ -1,0 +1,20 @@
+{
+  "id": "sc_intro",
+  "commands": [
+    { "id": "c_bg", "cmd": "bg", "asset": "a_bg_hall", "transition": { "type": "fade", "duration": 0.5 } },
+    { "id": "c_music", "cmd": "music", "asset": "a_mus_ambient", "fade": 2, "loop": true },
+    { "id": "c_n1", "cmd": "narrate", "text": "str_intro_1" },
+    { "id": "c_show", "cmd": "show", "char": "ch_anna", "expr": "neutral", "at": "left", "transition": { "type": "dissolve", "duration": 0.3 } },
+    { "id": "c_s1", "cmd": "say", "char": "ch_anna", "text": "str_intro_2" },
+    { "id": "c_s2", "cmd": "say", "char": "ch_anna", "text": "str_intro_3", "expr": "sad" },
+    { "id": "c_choice", "cmd": "choice", "options": [
+      { "id": "o_down", "text": "str_intro_opt_down",
+        "condition": { "op": ">", "l": { "var": "v_sanity" }, "r": 3 }, "when_unavailable": "disable",
+        "effects": [ { "op": "add", "var": "v_courage", "value": 1 } ],
+        "port": "p_down" },
+      { "id": "o_leave", "text": "str_intro_opt_leave",
+        "effects": [ { "op": "sub", "var": "v_courage", "value": 1 } ],
+        "port": "p_leave" }
+    ] }
+  ]
+}

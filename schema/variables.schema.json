@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "variables.schema.json",
+  "title": "Variables",
+  "$comment": "db/variables.json — переменные игры",
+  "type": "object",
+  "properties": {
+    "variables": { "type": "array", "items": { "$ref": "#/$defs/Variable" } }
+  },
+  "required": ["variables"],
+  "additionalProperties": false,
+  "$defs": {
+    "Variable": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/VarId" },
+        "name": {
+          "type": "string",
+          "pattern": "^[A-Za-zА-Яа-яЁё_][A-Za-zА-Яа-яЁё0-9_]*$",
+          "description": "Имя в текстовых формулах: рассудок > 3"
+        },
+        "title": { "type": "string", "description": "Подпись в редакторе" },
+        "type": { "type": "string", "enum": ["bool", "int", "float", "string"] },
+        "default": { "type": ["boolean", "number", "string"] },
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "scope": {
+          "type": "string",
+          "enum": ["playthrough", "persistent"],
+          "description": "playthrough — в сохранении; persistent — в профиле, между всеми сохранениями"
+        },
+        "category": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["id", "name", "type", "default", "scope"],
+      "additionalProperties": false
+    }
+  }
+}

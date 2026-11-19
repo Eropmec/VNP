@@ -1,0 +1,12 @@
+{
+  "format_version": 1,
+  "id": "old-house-demo",
+  "title": "Старый дом (демо)",
+  "version": "0.1.0",
+  "start": "n_ch1",
+  "languages": ["ru", "en"],
+  "default_language": "ru",
+  "resolution": { "width": 1280, "height": 720 },
+  "platforms": ["windows", "linux", "android"],
+  "modules": []
+}

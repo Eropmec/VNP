@@ -1,0 +1,11 @@
+{
+  "id": "ch_anna",
+  "name": "str_anna",
+  "color": "#c8a2ff",
+  "expressions": {
+    "neutral": "a_anna_neutral",
+    "sad": "a_anna_sad",
+    "scared": "a_anna_scared"
+  },
+  "default_expression": "neutral"
+}

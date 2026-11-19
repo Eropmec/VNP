@@ -1,0 +1,30 @@
+{
+  "id": "sc_gwm5f",
+  "commands": [
+    {
+      "id": "c_gwm5f",
+      "cmd": "narrate",
+      "text": "str_ya7lq"
+    },
+    {
+      "id": "c_hxxuq",
+      "cmd": "bg",
+      "asset": "a_bg_cellar",
+      "transition": {
+        "type": "dissolve",
+        "duration": 0.5
+      }
+    },
+    {
+      "id": "c_o97om",
+      "cmd": "show",
+      "char": "ch_anna",
+      "expr": "neutral",
+      "at": "center",
+      "transition": {
+        "type": "dissolve",
+        "duration": 0.3
+      }
+    }
+  ]
+}

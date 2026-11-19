@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "common.schema.json",
+  "title": "Common",
+  "$comment": "Общие типы формата проекта",
+  "$defs": {
+    "NodeId":    { "type": "string", "pattern": "^n_[a-z0-9_]+$", "description": "ID узла сюжетного графа" },
+    "EdgeId":    { "type": "string", "pattern": "^e_[a-z0-9_]+$", "description": "ID ребра графа" },
+    "SceneId":   { "type": "string", "pattern": "^sc_[a-z0-9_]+$", "description": "ID сцены (совпадает с именем файла)" },
+    "CommandId": { "type": "string", "pattern": "^c_[a-z0-9_]+$", "description": "ID команды внутри сцены" },
+    "OptionId":  { "type": "string", "pattern": "^o_[a-z0-9_]+$", "description": "ID варианта выбора" },
+    "VarId":     { "type": "string", "pattern": "^v_[a-z0-9_]+$", "description": "ID переменной" },
+    "CharId":    { "type": "string", "pattern": "^ch_[a-z0-9_]+$", "description": "ID персонажа (совпадает с именем файла)" },
+    "AssetId":   { "type": "string", "pattern": "^a_[a-z0-9_]+$", "description": "ID ассета из реестра" },
+    "StrKey":    { "type": "string", "pattern": "^str_[a-z0-9_]+$", "description": "Ключ строки в таблицах локализации" },
+    "PortId": {
+      "type": "string",
+      "pattern": "^(p_[a-z0-9_]+|next|else)$",
+      "description": "Именованный выход узла. next — сцена закончилась без перехода, else — ветка «иначе»"
+    },
+    "Ident": { "type": "string", "pattern": "^[a-z_][a-z0-9_]*$", "description": "Имя функции или ключ" },
+    "Color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+    "Transition": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["none", "fade", "dissolve", "slide_left", "slide_right", "zoom"] },
+        "duration": { "type": "number", "minimum": 0, "maximum": 30 }
+      },
+      "required": ["type"],
+      "additionalProperties": false
+    },
+    "StagePosition": {
+      "description": "Позиция на сцене: именованная или доля ширины экрана (0 — левый край, 1 — правый)",
+      "oneOf": [
+        { "type": "string", "enum": ["far_left", "left", "center", "right", "far_right"] },
+        {
+          "type": "object",
+          "properties": { "x": { "type": "number", "minimum": 0, "maximum": 1 } },
+          "required": ["x"],
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

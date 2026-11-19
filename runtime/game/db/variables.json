@@ -1,0 +1,10 @@
+{
+  "variables": [
+    { "id": "v_sanity", "name": "рассудок", "title": "Рассудок", "type": "int", "default": 6, "min": 0, "max": 10,
+      "scope": "playthrough", "category": "Ресурсы", "description": "Падает от пугающих событий" },
+    { "id": "v_courage", "name": "смелость", "title": "Смелость", "type": "int", "default": 1, "min": -5, "max": 5,
+      "scope": "playthrough", "category": "Отношения" },
+    { "id": "v_saw_shadow", "name": "видел_тень", "title": "Видел тень в подвале", "type": "bool", "default": false,
+      "scope": "playthrough", "category": "Флаги сюжета" }
+  ]
+}

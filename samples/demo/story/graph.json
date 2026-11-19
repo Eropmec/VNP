@@ -1,0 +1,36 @@
+{
+  "nodes": [
+    { "id": "n_ch1", "type": "chapter", "name": "Глава 1. Старый дом", "importance": "key", "entry": "n_intro" },
+
+    { "id": "n_intro", "type": "scene", "name": "Прихожая", "parent": "n_ch1", "importance": "key",
+      "player_flowchart": { "visible": true, "title": "str_fc_intro" }, "scene": "sc_intro" },
+    { "id": "n_cellar", "type": "scene", "name": "Подвал", "parent": "n_ch1",
+      "player_flowchart": { "visible": true, "title": "str_fc_cellar" }, "scene": "sc_cellar" },
+    { "id": "n_hall", "type": "scene", "name": "Разговор в холле", "parent": "n_ch1",
+      "player_flowchart": { "visible": true, "title": "str_fc_hall" }, "scene": "sc_hall" },
+
+    { "id": "n_fate", "type": "branch", "name": "Хватит ли смелости?", "parent": "n_ch1", "importance": "key",
+      "cases": [
+        { "port": "p_saved", "label": "смелость ≥ 1 и рассудок ≥ 2",
+          "condition": { "op": "and", "args": [
+            { "op": ">=", "l": { "var": "v_courage" }, "r": 1 },
+            { "op": ">=", "l": { "var": "v_sanity" }, "r": 2 } ] } }
+      ] },
+
+    { "id": "n_end_saved", "type": "ending", "name": "Концовка: вместе", "parent": "n_ch1", "importance": "key",
+      "ending": { "title": "str_end_saved", "kind": "good" } },
+    { "id": "n_end_whisper", "type": "ending", "name": "Концовка: шёпот", "parent": "n_ch1", "importance": "key",
+      "ending": { "title": "str_end_whisper", "kind": "bad" } },
+    { "id": "n_end_alone", "type": "ending", "name": "Концовка: один", "parent": "n_ch1", "importance": "key",
+      "ending": { "title": "str_end_alone", "kind": "neutral" } }
+  ],
+  "edges": [
+    { "id": "e_intro_down",  "from": { "node": "n_intro",  "port": "p_down" },  "to": "n_cellar" },
+    { "id": "e_intro_leave", "from": { "node": "n_intro",  "port": "p_leave" }, "to": "n_hall" },
+    { "id": "e_cellar_stay", "from": { "node": "n_cellar", "port": "p_stay" },  "to": "n_fate" },
+    { "id": "e_cellar_run",  "from": { "node": "n_cellar", "port": "p_run" },   "to": "n_end_alone" },
+    { "id": "e_hall_next",   "from": { "node": "n_hall",   "port": "next" },    "to": "n_fate" },
+    { "id": "e_fate_saved",  "from": { "node": "n_fate",   "port": "p_saved" }, "to": "n_end_saved" },
+    { "id": "e_fate_else",   "from": { "node": "n_fate",   "port": "else" },    "to": "n_end_whisper" }
+  ]
+}

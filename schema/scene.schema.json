@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "scene.schema.json",
+  "title": "Scene",
+  "$comment": "story/scenes/<id>.json — содержимое сцены",
+  "type": "object",
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/SceneId" },
+    "commands": { "type": "array", "items": { "$ref": "#/$defs/Command" } }
+  },
+  "required": ["id", "commands"],
+  "additionalProperties": false,
+  "$defs": {
+    "Command": {
+      "oneOf": [
+        { "$ref": "#/$defs/BgCommand" },
+        { "$ref": "#/$defs/ShowCommand" },
+        { "$ref": "#/$defs/HideCommand" },
+        { "$ref": "#/$defs/SayCommand" },
+        { "$ref": "#/$defs/NarrateCommand" },
+        { "$ref": "#/$defs/ChoiceCommand" },
+        { "$ref": "#/$defs/JumpCommand" },
+        { "$ref": "#/$defs/SetCommand" },
+        { "$ref": "#/$defs/IfCommand" },
+        { "$ref": "#/$defs/WaitCommand" },
+        { "$ref": "#/$defs/MusicCommand" },
+        { "$ref": "#/$defs/SfxCommand" },
+        { "$ref": "#/$defs/StopAudioCommand" }
+      ]
+    },
+    "BgCommand": {
+      "description": "Сменить фон",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/CommandId" },
+        "cmd": { "const": "bg" },
+        "asset": { "$ref": "common.schema.json#/$defs/AssetId" },
+        "transition": { "$ref": "common.schema.json#/$defs/Transition" }
+      },
+      "required": ["id", "cmd", "asset"],
+      "additionalProperties": false
+    },
+    "ShowCommand": {
+      "description": "Показать персонажа или сменить ему эмоцию/позицию",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/CommandId" },
+        "cmd": { "const": "show" },
+        "char": { "$ref": "common.schema.json#/$defs/CharId" },
+        "expr": { "type": "string", "description": "Эмоция; по умолчанию — default_expression персонажа" },
+        "at": { "$ref": "common.schema.json#/$defs/StagePosition" },
+        "transition": { "$ref": "common.schema.json#/$defs/Transition" }
+      },
+      "required": ["id", "cmd", "char"],
+      "additionalProperties": false
+    },
+    "HideCommand": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/CommandId" },
+        "cmd": { "const": "hide" },
+        "char": { "$ref": "common.schema.json#/$defs/CharId" },
+        "transition": { "$ref": "common.schema.json#/$defs/Transition" }
+      },
+      "required": ["id", "cmd", "char"],
+      "additionalProperties": false
+    },
+    "SayCommand": {
+      "description": "Реплика персонажа",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/CommandId" },
+        "cmd": { "const": "say" },
+        "char": { "$ref": "common.schema.json#/$defs/CharId" },
+        "text": { "$ref": "common.schema.json#/$defs/StrKey" },
+        "expr": { "type": "string", "description": "Сменить эмоцию вместе с репликой" },
+        "voice": { "$ref": "common.schema.json#/$defs/AssetId" }
+      },
+      "required": ["id", "cmd", "char", "text"],
+      "additionalProperties": false
+    },
+    "NarrateCommand": {
+      "description": "Текст рассказчика",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/CommandId" },
+        "cmd": { "const": "narrate" },
+        "text": { "$ref": "common.schema.json#/$defs/StrKey" },
+        "voice": { "$ref": "common.schema.json#/$defs/AssetId" }
+      },
+      "required": ["id", "cmd", "text"],
+      "additionalProperties": false
+    },
+    "ChoiceOption": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/OptionId" },
+        "text": { "$ref": "common.schema.json#/$defs/StrKey" },
+        "condition": { "$ref": "expr.schema.json#/$defs/Expr", "description": "Когда вариант доступен" },
+        "when_unavailable": { "type": "string", "enum": ["hide", "disable"], "description": "Скрыть или показать неактивным" },
+        "effects": { "type": "array", "items": { "$ref": "expr.schema.json#/$defs/Effect" } },
+        "port": { "$ref": "common.schema.json#/$defs/PortId", "description": "Выход сцены, по которому идёт игра" }
+      },
+      "required": ["id", "text", "port"],
+      "additionalProperties": false
+    },
+    "ChoiceCommand": {
+      "description": "Выбор игрока. Каждый вариант ведёт в свой выход сцены",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/CommandId" },
+        "cmd": { "const": "choice" },
+        "options": { "type": "array", "items": { "$ref": "#/$defs/ChoiceOption" }, "minItems": 1 }
+      },
+      "required": ["id", "cmd", "options"],
+      "additionalProperties": false
+    },
+    "JumpCommand": {
+      "description": "Выйти из сцены через порт",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/CommandId" },
+        "cmd": { "const": "jump" },
+        "port": { "$ref": "common.schema.json#/$defs/PortId" }
+      },
+      "required": ["id", "cmd", "port"],
+      "additionalProperties": false
+    },
+    "SetCommand": {
+      "description": "Изменить переменные",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/CommandId" },
+        "cmd": { "const": "set" },
+        "effects": { "type": "array", "items": { "$ref": "expr.schema.json#/$defs/Effect" }, "minItems": 1 }
+      },
+      "required": ["id", "cmd", "effects"],
+      "additionalProperties": false
+    },
+    "IfCommand": {
+      "description": "Условный блок внутри сцены",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/CommandId" },
+        "cmd": { "const": "if" },
+        "condition": { "$ref": "expr.schema.json#/$defs/Expr" },
+        "then": { "type": "array", "items": { "$ref": "#/$defs/Command" } },
+        "else": { "type": "array", "items": { "$ref": "#/$defs/Command" } }
+      },
+      "required": ["id", "cmd", "condition", "then"],
+      "additionalProperties": false
+    },
+    "WaitCommand": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/CommandId" },
+        "cmd": { "const": "wait" },
+        "seconds": { "type": "number", "exclusiveMinimum": 0, "maximum": 600 }
+      },
+      "required": ["id", "cmd", "seconds"],
+      "additionalProperties": false
+    },
+    "MusicCommand": {
+      "description": "Включить музыку (asset: null — выключить)",
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/CommandId" },
+        "cmd": { "const": "music" },
+        "asset": { "oneOf": [ { "$ref": "common.schema.json#/$defs/AssetId" }, { "type": "null" } ] },
+        "fade": { "type": "number", "minimum": 0, "maximum": 30 },
+        "loop": { "type": "boolean" }
+      },
+      "required": ["id", "cmd", "asset"],
+      "additionalProperties": false
+    },
+    "SfxCommand": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/CommandId" },
+        "cmd": { "const": "sfx" },
+        "asset": { "$ref": "common.schema.json#/$defs/AssetId" },
+        "volume": { "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "required": ["id", "cmd", "asset"],
+      "additionalProperties": false
+    },
+    "StopAudioCommand": {
+      "type": "object",
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/CommandId" },
+        "cmd": { "const": "stop_audio" },
+        "channel": { "type": "string", "enum": ["music", "sfx", "voice", "all"] },
+        "fade": { "type": "number", "minimum": 0, "maximum": 30 }
+      },
+      "required": ["id", "cmd", "channel"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "sc_cellar",
+  "commands": [
+    { "id": "c_bg", "cmd": "bg", "asset": "a_bg_cellar", "transition": { "type": "fade", "duration": 1 } },
+    { "id": "c_creak", "cmd": "sfx", "asset": "a_sfx_creak", "volume": 0.8 },
+    { "id": "c_n1", "cmd": "narrate", "text": "str_cellar_1" },
+    { "id": "c_fear", "cmd": "set", "effects": [
+      { "op": "sub", "var": "v_sanity", "value": 2 },
+      { "op": "set", "var": "v_saw_shadow", "value": true }
+    ] },
+    { "id": "c_if", "cmd": "if",
+      "condition": { "op": "<", "l": { "var": "v_sanity" }, "r": 3 },
+      "then": [ { "id": "c_n2", "cmd": "narrate", "text": "str_cellar_2" } ],
+      "else": [ { "id": "c_n3", "cmd": "narrate", "text": "str_cellar_3" } ] },
+    { "id": "c_show", "cmd": "show", "char": "ch_anna", "expr": "scared", "at": "center" },
+    { "id": "c_s1", "cmd": "say", "char": "ch_anna", "text": "str_cellar_4" },
+    { "id": "c_choice", "cmd": "choice", "options": [
+      { "id": "o_stay", "text": "str_cellar_opt_stay", "port": "p_stay" },
+      { "id": "o_run", "text": "str_cellar_opt_run",
+        "effects": [ { "op": "sub", "var": "v_courage", "value": 1 } ], "port": "p_run" }
+    ] }
+  ]
+}

@@ -1,0 +1,21 @@
+id,text
+str_anna,Anna
+str_intro_1,The old house greeted us with silence. Only the wind roams through the cracks.
+str_intro_2,Someone is here. I can feel it.
+str_intro_3,Did you hear that? Down there...
+str_intro_opt_down,Go down to the cellar
+str_intro_opt_leave,Convince Anna to leave
+str_cellar_1,The steps creak. The lantern light drowns in damp darkness.
+str_cellar_2,A shadow stirs in the corner. Your heart is pounding in your throat.
+str_cellar_3,The shadow in the corner is just an old coat on a hook.
+str_cellar_4,Don't leave me alone!
+str_cellar_opt_stay,Take Anna's hand
+str_cellar_opt_run,Run upstairs
+str_hall_1,"Fine... But I'll come back. Alone, if I have to."
+str_hall_2,The door slammed shut. A quiet whisper rose from below.
+str_fc_intro,Entrance
+str_fc_cellar,Cellar
+str_fc_hall,Hall
+str_end_saved,Together until dawn
+str_end_whisper,Whisper in the dark
+str_end_alone,Alone on the threshold

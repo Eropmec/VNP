@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "expr.schema.json",
+  "title": "Expressions",
+  "$comment": "Выражения: условия и эффекты",
+  "description": "Условия и эффекты хранятся как дерево (AST). Визуальный конструктор, текстовая формула и анализатор работают с одной структурой.",
+  "$defs": {
+    "Expr": {
+      "oneOf": [
+        { "type": "number", "description": "Константа-число" },
+        { "type": "boolean", "description": "Константа да/нет" },
+        { "type": "string", "description": "Константа-строка или ID узла для visited()" },
+        { "type": "null" },
+        { "$ref": "#/$defs/VarRef" },
+        { "$ref": "#/$defs/Logic" },
+        { "$ref": "#/$defs/Not" },
+        { "$ref": "#/$defs/Compare" },
+        { "$ref": "#/$defs/Arith" },
+        { "$ref": "#/$defs/Call" }
+      ]
+    },
+    "VarRef": {
+      "type": "object",
+      "properties": { "var": { "$ref": "common.schema.json#/$defs/VarId" } },
+      "required": ["var"],
+      "additionalProperties": false
+    },
+    "Logic": {
+      "type": "object",
+      "properties": {
+        "op": { "type": "string", "enum": ["and", "or"] },
+        "args": { "type": "array", "items": { "$ref": "#/$defs/Expr" }, "minItems": 2 }
+      },
+      "required": ["op", "args"],
+      "additionalProperties": false
+    },
+    "Not": {
+      "type": "object",
+      "properties": {
+        "op": { "const": "not" },
+        "arg": { "$ref": "#/$defs/Expr" }
+      },
+      "required": ["op", "arg"],
+      "additionalProperties": false
+    },
+    "Compare": {
+      "type": "object",
+      "properties": {
+        "op": { "type": "string", "enum": ["==", "!=", "<", "<=", ">", ">="] },
+        "l": { "$ref": "#/$defs/Expr" },
+        "r": { "$ref": "#/$defs/Expr" }
+      },
+      "required": ["op", "l", "r"],
+      "additionalProperties": false
+    },
+    "Arith": {
+      "type": "object",
+      "properties": {
+        "op": { "type": "string", "enum": ["+", "-", "*", "/", "mod"] },
+        "l": { "$ref": "#/$defs/Expr" },
+        "r": { "$ref": "#/$defs/Expr" }
+      },
+      "required": ["op", "l", "r"],
+      "additionalProperties": false
+    },
+    "Call": {
+      "description": "Вызов функции ядра или плагина",
+      "type": "object",
+      "properties": {
+        "op": { "const": "call" },
+        "fn": { "$ref": "common.schema.json#/$defs/Ident" },
+        "args": { "type": "array", "items": { "$ref": "#/$defs/Expr" } }
+      },
+      "required": ["op", "fn"],
+      "additionalProperties": false
+    },
+
+    "Effect": {
+      "oneOf": [
+        { "$ref": "#/$defs/AssignEffect" },
+        { "$ref": "#/$defs/ToggleEffect" },
+        { "$ref": "#/$defs/CallEffect" }
+      ]
+    },
+    "AssignEffect": {
+      "description": "set — присвоить; add/sub/mul — изменить числовую переменную",
+      "type": "object",
+      "properties": {
+        "op": { "type": "string", "enum": ["set", "add", "sub", "mul"] },
+        "var": { "$ref": "common.schema.json#/$defs/VarId" },
+        "value": { "$ref": "#/$defs/Expr" }
+      },
+      "required": ["op", "var", "value"],
+      "additionalProperties": false
+    },
+    "ToggleEffect": {
+      "type": "object",
+      "properties": {
+        "op": { "const": "toggle" },
+        "var": { "$ref": "common.schema.json#/$defs/VarId" }
+      },
+      "required": ["op", "var"],
+      "additionalProperties": false
+    },
+    "CallEffect": {
+      "type": "object",
+      "properties": {
+        "op": { "const": "call" },
+        "fn": { "$ref": "common.schema.json#/$defs/Ident" },
+        "args": { "type": "array", "items": { "$ref": "#/$defs/Expr" } }
+      },
+      "required": ["op", "fn"],
+      "additionalProperties": false
+    }
+  }
+}
